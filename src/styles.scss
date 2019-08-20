@@ -1,0 +1,22 @@
+/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+@import './theme.scss';
+
+* {
+  font-family: 'Open Sans';
+}
+
+:root {
+  --primary-color: #E13D2C;
+  --secondary-color: #B92212;
+  --primary-color-light: #F36354;
+  --primary-blue: #2370ed;
+}
+
+body {
+  position: absolute;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  background: #f2f2f2;
+}

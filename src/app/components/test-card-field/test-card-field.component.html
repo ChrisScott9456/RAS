@@ -1,0 +1,21 @@
+<div>
+  <div>
+    <span class="fieldName">{{ fieldName }}</span>
+    <span *ngIf="!editMode && fieldRequired && !fieldVal" class="alert"> - Required</span>
+  </div>
+  <span *ngIf="editMode">{{ fieldVal }}</span>
+
+  <!--Edit Mode Active-->
+  <div class="fieldInput" *ngIf="!editMode">
+    <span *ngIf="fieldType === 'text'">
+      <input [(ngModel)]="fieldVal" type="text" placeholder="{{fieldName}}" (change)="updateField()">
+    </span>
+    <span *ngIf="fieldType === 'dropdown'">
+      <select name="{{fieldName}}" [(ngModel)]="fieldVal" (change)="updateField()">
+        <option></option>
+        <option *ngFor="let dropdown of dropdowns; trackBy: trackByFunc" value="{{dropdown}}">{{dropdown}}</option>
+      </select>
+    </span>
+  </div>
+
+</div>

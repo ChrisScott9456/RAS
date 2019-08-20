@@ -1,0 +1,23 @@
+.fieldName {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.alert {
+  color: red;
+}
+
+.fieldInput {
+  padding-top: 2px;
+}
+
+.fieldInput>span>input {
+  min-width: 100%;
+  font-size: 16px;
+}
+
+.fieldInput>span>select {
+  max-width: 200px;
+  font-size: 16px;
+}
+

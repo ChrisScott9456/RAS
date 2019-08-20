@@ -1,0 +1,7 @@
+<app-loading-spinner></app-loading-spinner>
+<app-sidebar [currentRoute]="currentRoute" (changeRoute)="changeRoute($event)"></app-sidebar>
+<h1 class="page-title">{{ title }}</h1>
+
+<main class="page-content">
+  <router-outlet *ngIf="router.url === '/accessdenied' || userService.getAccess()"></router-outlet>
+</main>

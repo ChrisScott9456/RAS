@@ -1,0 +1,17 @@
+.modal-button-container {
+  display: flex;
+}
+
+.modal-button {
+  font-weight: bold;
+  flex: 1 1;
+}
+
+.field-list {
+  display: inline-flex;
+}
+
+.field {
+  flex: 1 1;
+  margin: 5px;
+}

@@ -1,0 +1,8 @@
+.modal-button-container {
+  display: flex;
+}
+
+.modal-button {
+  font-weight: bold;
+  flex: 1 1;
+}

@@ -1,0 +1,76 @@
+<div *ngIf="buildList" class="build-wrapper"></div>
+<aside *ngIf="buildList" class="build-list-container">
+  <button class="build-button-close" mat-button (click)="toggleBuildList()" style="margin: 0"><i class="material-icons">clear</i></button>
+  <header class="build-list-header">
+    <span class="build-list-title">Build List</span>
+  </header>
+
+  <div class="build-list">
+    <div class="build-control-container">
+      <button class="build-control-button" mat-raised-button (click)="toggleBuildList(); enableEditBuildMode(); currBuild = {name: 'New Build', index: builds.length}; buildMode = true" style="color: white; background: var(--primary-blue)">New Build</button>
+      <button class="build-control-button" mat-raised-button (click)="toggleBuildList(); enableEditBuildMode()" [disabled]="!buildMode">Edit Build</button>
+    </div>
+    <button class="build-button full-suite" mat-button (click)="buildMode = false; currBuild = {name: 'Full Suite', index: -1}; resetBuild(); cancelEditBuildMode(!editBuildMode)">Full Suite</button>
+    <button *ngFor="let build of builds; let i = index" mat-button class="build-button" (click)="chooseBuild(i); buildMode = true; cancelEditBuildMode(!editBuildMode)">{{ build?.name }}</button>
+  </div>
+</aside>
+
+<header *ngIf="suite" (click)="logThis()">
+  <div class="header-spacer"></div>
+  <div class="suite-header">
+    <button class="builds-button" mat-raised-button [disabled]="!editMode" (click)="toggleBuildList()">Builds</button>
+    <mat-checkbox class="select-all" color="primary" [(ngModel)]="selectAll" (click)="setSelectAll()">Select All</mat-checkbox>
+    <span [style.marginRight]="!editMode ? '50%' : '0'">
+      <b>Go to ID: </b>
+      <input [(ngModel)]="focusTest" placeholder="Go to ID" type="search" (change)="focusItem(focusTest)">
+    </span>
+    <span *ngIf="buildMode" class="current-build"><b>Current Build: </b> 
+      <span *ngIf="!editBuildMode">{{ currBuild.name }}</span>
+      <input *ngIf="editBuildMode" type="text" placeholder="Build Name" [(ngModel)]="currBuild.name" style="width: 300px">
+    </span>
+    <div *ngIf="!editMode" class="add-button-container">
+      <button mat-fab (click)="addTest()" class="mat-fab">
+        <i class="material-icons add-button">control_point</i>
+      </button>
+    </div>
+    <div class="header-right">
+      <button *ngIf="editMode && !editBuildMode && !buildMode" mat-raised-button [disabled]="buildList || editBuildMode" (click)="toggleEditMode()" class="blue-button">Edit</button>
+      <button *ngIf="editMode && !editBuildMode" mat-raised-button [disabled]="buildList || editBuildMode" (click)="confirmRun()">Run</button>
+      <button *ngIf="!editMode" mat-raised-button [disabled]="buildList || editBuildMode" (click)="cancelSuite()">Cancel</button>
+      <button *ngIf="!editMode" mat-raised-button [disabled]="buildList || editBuildMode" (click)="updateSuite()" class="blue-button">Save</button>
+      <button *ngIf="editBuildMode" mat-raised-button [disabled]="!editMode" (click)="cancelEditBuildMode()">Cancel</button>
+      <button *ngIf="editBuildMode" mat-raised-button [disabled]="!editMode" (click)="updateBuild()" class="blue-button">Save</button>
+    </div>
+  </div>
+  <div class="header-spacer" style="margin-right: 16px"></div>
+</header>
+
+<main>
+  <virtual-scroller 
+    *ngIf="suite && primary_fields && test_fields && dropdowns" 
+    #scroll 
+    [items]="suite"  
+    [stripedTable]="true"
+    [enableUnequalChildrenSizes]="true"
+    [bufferAmount]="5" 
+    class="card-list">
+    
+    <span *ngFor="let test of scroll.viewPortItems; trackBy: trackByFunc; let oddEven = odd;">
+    <app-test-card
+      class="example-box" 
+      *ngIf="test?.test_id" 
+      [test]="test" 
+      [primary_fields]="primary_fields"
+      [test_fields]="test_fields[test?.test_id]"
+      [dropdowns]="dropdowns"
+      [editMode]="editMode"  
+      [oddEven]="oddEven"
+      [expanded]="test.expanded"
+      [newID]="test._id"
+      (testDeleteEvent)="deleteTest($event)"
+      (changeIDEvent)="insertTest($event)">
+    </app-test-card>
+  </span>
+  </virtual-scroller>
+  <div *ngIf="!suite?.length" class="card-list empty-suite">No Tests Found</div>
+</main>

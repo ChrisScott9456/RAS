@@ -1,0 +1,76 @@
+<div *ngIf="test.test_id" class="test-card-container" 
+  [style.background]="expanded && !queueMode ? '#cccccc' : '#ffffff'" 
+  [style.margin]="expanded ? '10px 0' : '0'" 
+  [style.opacity]="!test.buildEnable ? '0.5' : '1'"
+  style="padding: 5px">
+
+  <!--Delete Button-->
+  <div *ngIf="!queueMode" class="delete-button-container test-card-spacer">
+    <button mat-fab *ngIf="!editMode" (click)="deleteTest()" class="mat-fab">
+      <i class="material-icons delete-button">highlight_off</i>
+    </button>
+  </div>
+
+  <div class="test-card" 
+    [style.background]="oddEven ? '#dfdfdf' : '#ffffff'" 
+    [style.marginBottom]="expanded && !queueMode ? '20px' : '0'" 
+    [style.marginTop]="expanded && !queueMode ? '20px' : '0'">
+
+    <div class="content">
+      <!--Checkbox/Reorder div-->
+      <div *ngIf="editMode && !queueMode" class="checkbox-reorder">
+        <mat-checkbox *ngIf="editMode" color="primary" [(ngModel)]="test.selected" [disabled]="!test.buildEnable"></mat-checkbox>
+      </div>
+
+      <!--Card ID-->
+      <div class="card-id">
+        <span *ngIf="editMode">{{ test?._id }}</span>
+        <input *ngIf="!editMode" [(ngModel)]="newID" type="text" placeholder="ID" (change)="changeID()">-{{ test?.test_id }}
+      </div>
+
+      <!--List of primary fields-->
+      <div class="primary" [style.border-bottom-right-radius.px]="expanded ? none : 4">
+        <div class="primary-fields">
+          <div class="field" *ngFor="let elem of primary_fields; trackBy: trackByFunc">
+            <app-test-card-field
+              [fieldName]="elem?.name"
+              [fieldVal]="test?.primary_fields[elem?.name]"
+              [fieldType]="elem?.type"
+              [fieldRequired]="elem?.required"
+              [dropdowns]="dropdowns[elem?.name]"
+              [editMode]="editMode"  
+              (fieldUpdate)="updateTest($event)">
+            </app-test-card-field>
+          </div>
+        </div>
+        
+        <!--Dropdown Button-->
+        <span class="dropdown-button-container">
+          <button class="dropdown-button" (click)="toggleDetails()"><i class="material-icons">expand_more</i></button>
+        </span>
+
+      </div>
+    </div>
+
+    <!--Expanded list of secondary fields-->
+    <div *ngIf="expanded && test_fields && dropdowns" class="secondary">
+      <div class="field" *ngFor="let elem of test_fields.fields; trackBy: trackByFunc">
+        <app-test-card-field 
+          [fieldName]="elem?.name"
+          [fieldVal]="test && test.test_fields && test.test_fields[elem.name] ? test.test_fields[elem.name] : null"
+          [fieldType]="elem?.type"
+          [fieldRequired]="elem?.required"
+          [dropdowns]="dropdowns[elem?.name]"
+          [editMode]="editMode"
+          (fieldUpdate)="updateTest($event)">
+        </app-test-card-field>
+      </div>
+    </div>
+
+  </div>
+
+  <!--Spacer to the right of test-card -->
+  <div *ngIf="!queueMode" class="test-card-spacer">
+  </div>
+
+</div>

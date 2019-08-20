@@ -1,0 +1,19 @@
+<div mat-dialog-content>
+  <h1 mat-dialog-title>Add Test</h1>
+  <p style="color: red">Please fill out all the primary fields:</p>
+  <div class="field-list" *ngFor="let elem of data.primary_fields">
+    <app-test-card-field
+      class="field"
+      [fieldName]="elem?.name"
+      [fieldVal]="data?.primary_fields[elem?.name]"
+      [fieldType]="elem?.type"
+      [dropdowns]="data.dropdowns[elem?.name]"
+      [editMode]="false" 
+      (fieldUpdate)="updatePrimary($event)">
+    </app-test-card-field>
+  </div>
+</div>
+<div class="modal-button-container" mat-dialog-actions>
+  <button class="modal-button" mat-raised-button (click)="onNoClick()">CANCEL</button>
+  <button class="modal-button" mat-raised-button [disabled]="!filled" [mat-dialog-close]="data.newTest" cdkFocusInitial>OK</button>
+</div>

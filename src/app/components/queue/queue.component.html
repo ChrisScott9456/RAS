@@ -1,0 +1,67 @@
+<header>
+  <div class="header-spacer"></div>
+  <div class="suite-header">
+    <button class="stop-button" mat-raised-button (click)="stopRun()">Stop Run</button>
+    <div>
+      <button class="rerun-errors-button" mat-raised-button (click)="rerunErrors()">Rerun Errors</button>
+      <button mat-raised-button (click)="rerunAll()">Rerun All</button>
+    </div>
+  </div>
+  <div class="header-spacer"></div>
+</header>
+
+<main>
+<virtual-scroller 
+  *ngIf="queue && primary_fields && test_fields && dropdowns" 
+  #scroll 
+  [items]="queue"  
+  [stripedTable]="true"
+  [enableUnequalChildrenSizes]="true"
+  [bufferAmount]="0"
+  class="card-list">
+  <span *ngFor="let test of scroll.viewPortItems; trackBy: trackByFunc; let oddEven = odd;" class="card-row">
+    
+    <div class="left-container">
+      <div class="status-time-container">
+        <div class="status-container status">
+          <span class="status-title">Status</span>
+          <div class="status" id="{{ getStatus(test?.status) }}">
+            <span class="status-text" matTooltip="{{ test?.status }}" matTooltipPosition="below" matTooltipShowDelay="200">
+              {{ test?.status }}
+            </span>
+          </div>
+        </div>
+        <div class="status-container time">
+          <span class="status-title">Time</span>
+          <div class="status" style="background: rgb(223, 223, 223)">
+            <span class="status-text" matTooltip="{{ test?.time }}" matTooltipPosition="below" matTooltipShowDelay="200">
+              {{ test?.time }}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="test.expanded" class="status-container">
+        <span class="status-title">Result</span>
+        <div class="status" id="{{ test?.result ? getStatus(test?.status) : null }}">
+          <span class="status-text" matTooltip="{{ test?.result }}" matTooltipPosition="below" matTooltipShowDelay="200">
+            {{ test?.result }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <app-test-card
+      class="example-box" 
+      *ngIf="test?.test_id"
+      [test]="test" 
+      [primary_fields]="primary_fields"
+      [test_fields]="test_fields[test?.test_id]"
+      [dropdowns]="dropdowns"
+      [editMode]="true"
+      [queueMode]="true"
+      [oddEven]="oddEven"
+      [expanded]="test.expanded">
+    </app-test-card>
+  </span>
+</virtual-scroller>
+</main>

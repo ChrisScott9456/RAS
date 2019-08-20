@@ -1,0 +1,9 @@
+<div mat-dialog-content>
+  <h1 mat-dialog-title>Save Build</h1>
+  <p style="color: red">Please provide a Build Name:</p>
+  <input [(ngModel)]="buildName" type="text" placeholder="Build Name" (change)="changeName()">
+</div>
+<div class="modal-button-container" mat-dialog-actions>
+  <button class="modal-button" mat-raised-button (click)="onNoClick()">CANCEL</button>
+  <button class="modal-button" mat-raised-button [disabled]="!filled" [mat-dialog-close]="buildName" cdkFocusInitial>SAVE</button>
+</div>
